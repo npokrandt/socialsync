@@ -1,0 +1,44 @@
+[
+    {
+        "username": "npokrandt",
+        "email":"npokrandt919@gmail.com",
+        "password": "password",
+        "friends":[],
+        "events":[]
+    },
+    {
+        "username": "acrossley",
+        "email":"annika@gmail.com",
+        "password":"password",
+        "friends":[],
+        "events":[]
+    },
+    {
+        "username":"dliebherr",
+        "email":"david@gmail.com",
+        "password":"password",
+        "friends":[],
+        "events":[]
+    },
+    {
+        "username":"evandenburg",
+        "email":"evan@gmail.com",
+        "password":"password",
+        "friends":[],
+        "events":[]
+    },
+    {
+        "username":"cugur",
+        "email":"cuma@gmail.com",
+        "password":"password",
+        "friends":[],
+        "events":[]
+    },
+    {
+        "username":"dguthro",
+        "email":"doug@gmail.com",
+        "password":"password",
+        "friends":[],
+        "events":[]
+    }
+]
