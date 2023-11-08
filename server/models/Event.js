@@ -5,15 +5,17 @@ const eventSchema = new Schema({
         type: String,
         required: true
     },
-    date: {
+    location: String,
+    description: String,
+    startTime: {
         type: Date,
         required: true
     },
-    location: String,
-    description: String,
-    startTime: Date,
-    endTime: Date
-})
+    endTime: {
+        type: Date,
+        required: true
+    }
+}) 
 
 const Event = model('Event', eventSchema)
 
