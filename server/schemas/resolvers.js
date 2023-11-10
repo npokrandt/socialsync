@@ -1,63 +1,78 @@
-const { Profile } = require('../models');
+const { LogTimings } = require('concurrently');
+const { User, Event } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
   Query: {
-    profiles: async () => {
-      return Profile.find();
+    users: async () => {
+      const users = await User.find({})
+      return users
     },
+    user: async (parent, { userId }, context, info) => {
+      const user = User.findById(userId)
+      return user
+    },
+    events: async () => {
+      const events = await Event.find()
+      return events
+    },
+    event: async (parent, { eventId }, context, info) => {
+      const event = await Event.findById(eventId)
+      return event
+    }
 
-    profile: async (parent, { profileId }) => {
-      return Profile.findOne({ _id: profileId });
-    },
   },
 
   Mutation: {
-    addProfile: async (parent, { name, email, password }) => {
-      const profile = await Profile.create({ name, email, password });
-      const token = signToken(profile);
-
-      return { token, profile };
+    //add user
+    addUser: async (parent, { username, email, password }, context, info) => {
+      const addUser = await User.create({username, email, password})
+      console.log(addUser)
+      const token = signToken(addUser)
+      return {addUser, token}
     },
-    login: async (parent, { email, password }) => {
-      const profile = await Profile.findOne({ email });
 
-      if (!profile) {
-        throw AuthenticationError;
+    //login
+    login: async (parent, { email, password }, context, info) => {
+      const login = await User.findOne({email}) 
+      const verifyPw = await login.isCorrectPassword(password)
+      const token = signToken(login)
+      if (verifyPw) {
+        return {login, token}
+      } else {
+        console.log("Something went wrong")
       }
-
-      const correctPw = await profile.isCorrectPassword(password);
-
-      if (!correctPw) {
-        throw AuthenticationError;
-      }
-
-      const token = signToken(profile);
-      return { token, profile };
     },
 
-    addSkill: async (parent, { profileId, skill }) => {
-      return Profile.findOneAndUpdate(
-        { _id: profileId },
-        {
-          $addToSet: { skills: skill },
-        },
-        {
-          new: true,
-          runValidators: true,
-        }
-      );
+    //remove user
+    removeUser: async (parent, { userId }, context, info) => {
+      return null
     },
-    removeProfile: async (parent, { profileId }) => {
-      return Profile.findOneAndDelete({ _id: profileId });
+
+    //add friend
+    addFriend: async (parent, { friendId, userId }, context, info) => {
+      return null
     },
-    removeSkill: async (parent, { profileId, skill }) => {
-      return Profile.findOneAndUpdate(
-        { _id: profileId },
-        { $pull: { skills: skill } },
-        { new: true }
-      );
+
+    //delete friend
+    deleteFriend: async (parent, { friendId, userId }, context, info) => {
+      return null
     },
+
+    //update event
+    updateEvent: async (parent, { eventId, eventInput }, context, info) => {
+      return null
+    },
+
+    //delete event
+    deleteEvent: async (parent, { eventId }, context, info) => {
+      return null
+    },
+
+    //add event
+    addEvent: async (parent, { eventInput }, context, info) => {
+      return null
+    }
   },
 };
 
