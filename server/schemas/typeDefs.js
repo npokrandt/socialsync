@@ -47,8 +47,8 @@ const typeDefs = `
     addFriend(friendId: ID, userId: ID): User
     deleteFriend(friendId: ID, userId: ID): User
 
-    updateEvent(eventID: ID, eventInput: EventInput): Event
-    deleteEvent(eventID: ID): Event
+    updateEvent(eventId: ID, eventInput: EventInput): Event
+    deleteEvent(eventId: ID): Event
 
 
     addEvent(eventInput: EventInput): Event
