@@ -1,15 +1,10 @@
-const { Profile } = require('../models');
+const { User, Event } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
   Query: {
-    profiles: async () => {
-      return Profile.find();
-    },
+ 
 
-    profile: async (parent, { profileId }) => {
-      return Profile.findOne({ _id: profileId });
-    },
   },
 
   Mutation: {
