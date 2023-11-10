@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@3.10.2/dist/fullcalendar.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.10.2/dist/fullcalendar.min.js"></script> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@3.10.2/dist/fullcalendar.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.10.2/dist/fullcalendar.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socialsync</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    
+</head>
+<body>
+    <h1>Welcome to Socialsync!</h1>
+    
+    <form id="postForm">
+        <label for="author">Author:</label>
+        <input type="text" id="author" required>
+        
+        <br>
+        
+        <label for="content">Content:</label>
+        <textarea id="content" required></textarea>
+        
+        <br>
+        
+        <button type="button" onclick="createPost()">Post</button>
+    </form>
+    
+    <h2>Recent Posts</h2>
+
+    
+<h2>Calendar</h2>
+<div id="calendar"></div>
+
+    
+    <ul id="postList"></ul>
+
+    <script>
+        
+    $(document).ready(function() {
+        // Initialize FullCalendar
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,basicWeek,basicDay'
+            },
+            defaultDate: moment(),
+            editable: false,
+            eventLimit: true,
+            events: [
+                // You can load events from a server or add them manually here
+            ],
+        });
+    });
+        function createPost() {
+            var author = document.getElementById('author').value;
+            var content = document.getElementById('content').value;
+
+            if (author && content) {
+                var postList = document.getElementById('postList');
+                var li = document.createElement('li');
+                li.textContent = author + ': ' + content;
+                postList.appendChild(li);
+
+                // Clear form fields
+                document.getElementById('author').value = '';
+                document.getElementById('content').value = '';
+            } else {
+                alert('Author and content are required!');
+            }
+        }
+    </script>
+</body>
+<h2>Recent Posts</h2>
+
+<ul id="postList"></ul>
+
+<h2>Calendar</h2>
+<div id="calendar"></div>
+
+<script>
+    // ... Existing JavaScript code ...
+
+    function createPost() {
+        // ... Existing createPost function ...
+
+        // Add calendar event
+        $('#calendar').fullCalendar('renderEvent', {
+            title: author + ': ' + content,
+            start: moment().format('YYYY-MM-DD'),
+            allDay: true,
+        });
+    }
+
+    $(document).ready(function() {
+        // Initialize FullCalendar
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,basicWeek,basicDay'
+            },
+            defaultDate: moment(),
+            editable: false,
+            eventLimit: true,
+            events: [
+                // You can load events from a server or add them manually here
+            ],
+        });
+    });
+</script>
+</body>
+</html>
