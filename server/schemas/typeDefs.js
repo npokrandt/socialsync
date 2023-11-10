@@ -1,3 +1,5 @@
+
+
 const typeDefs = `
   type User {
     _id: ID
@@ -12,8 +14,8 @@ const typeDefs = `
     eventName: String!
     location: String
     description: String
-    startTime: Date!
-    endTime: Date!
+    startTime: String!
+    endTime: String!
   }
 
   type Event {
@@ -21,8 +23,8 @@ const typeDefs = `
     eventName: String!
     location: String
     description: String
-    startTime: Date!
-    endTime: Date!
+    startTime: String!
+    endTime: String!
   }
 
   type Auth {
