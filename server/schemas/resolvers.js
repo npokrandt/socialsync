@@ -1,15 +1,14 @@
-const { LogTimings } = require('concurrently');
 const { User, Event } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
   Query: {
     users: async () => {
-      const users = await User.find({})
+      const users = await User.find({}).populate('friends').populate('events')
       return users
     },
     user: async (parent, { userId }, context, info) => {
-      const user = User.findById(userId)
+      const user = User.findById(userId).populate('friends').populate('events')
       return user
     },
     events: async () => {
