@@ -35,27 +35,34 @@ const resolvers = {
     login: async (parent, { email, password }, context, info) => {
       const login = await User.findOne({email}) 
       const verifyPw = await login.isCorrectPassword(password)
+      console.log(login)
       const token = signToken(login)
       if (verifyPw) {
-        return {login, token}
+        return {token, login}
       } else {
         console.log("Something went wrong")
       }
     },
 
     //remove user
-    removeUser: async (parent, { userId }, context, info) => {
-      return null
+    deleteUser: async (parent, { userId }, context, info) => {
+      // TODO: remove user from all friend lists and an event IF they are the only user attached to it
+      const deletedUser = await User.findByIdAndDelete(userId)
+      return deletedUser
     },
 
     //add friend
     addFriend: async (parent, { friendId, userId }, context, info) => {
-      return null
+      const user = User.findByIdAndUpdate(userId, {$addToSet: {'friends': friendId},
+      new: true})
+      return user
     },
 
     //delete friend
     deleteFriend: async (parent, { friendId, userId }, context, info) => {
-      return null
+      const user = User.findByIdAndUpdate(userId, {$pull: {'friends': friendId}},
+      {new: true})
+      return user
     },
 
     //update event
