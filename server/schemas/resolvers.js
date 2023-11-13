@@ -16,7 +16,7 @@ const resolvers = {
       if (userId.length !== 24){
         throw new GraphQLError('Invalid Id')
       }
-      const user = await User.findById(userId)//.populate('friends').populate('events')
+      const user = await User.findById(userId).populate('friends').populate('events')
       if (!user){
         throw new GraphQLError('User not found')
       }
@@ -43,6 +43,9 @@ const resolvers = {
     //add user
     addUser: async (parent, { username, email, password }, context, info) => {
       const addUser = await User.create({username, email, password})
+      if (!addUser){
+        throw new GraphQLError("user creation unsuccessful")
+      }
       console.log(addUser)
       const token = signToken(addUser)
       return {addUser, token}
@@ -51,13 +54,16 @@ const resolvers = {
     //login
     login: async (parent, { email, password }, context, info) => {
       const login = await User.findOne({email}) 
+      if (!login){
+        throw new GraphQLError("login unsuccessful")
+      }
       const verifyPw = await login.isCorrectPassword(password)
-      console.log(login)
-      const token = signToken(login)
       if (verifyPw) {
+        const token = signToken(login)
         return {token, login}
       } else {
-        console.log("Something went wrong")
+        //AuthenticationError()
+        throw new GraphQLError("login unsuccessful")
       }
     },
 
@@ -65,20 +71,36 @@ const resolvers = {
     deleteUser: async (parent, { userId }, context, info) => {
       // TODO: remove user from all friend lists and an event IF they are the only user attached to it
       const deletedUser = await User.findByIdAndDelete(userId)
+      if (!deletedUser){
+        throw new GraphQLError("user not found")
+      }
       return deletedUser
     },
 
     //add friend
     addFriend: async (parent, { friendId, userId }, context, info) => {
-      const user = await User.findByIdAndUpdate(userId, {$addToSet: {'friends': friendId},
-      new: true})
+      if (userId === friendId){
+        throw new GraphQLError("User cannot be their own friend")
+      }
+      //checking that the other user exists
+      const friend = await User.findById(friendId)
+      if(!friend){
+        throw new GraphQLError("invalid friend ID")
+      }
+      const user = await User.findByIdAndUpdate(userId, {$addToSet: {'friends': friendId}},{new: true})
+      if (!user){
+        throw new GraphQLError("user not found")
+      }
       return user
     },
 
     //delete friend
     deleteFriend: async (parent, { friendId, userId }, context, info) => {
-      const user = await User.findByIdAndUpdate(userId, {$pull: {'friends': friendId}},
+      const user = await User.findByIdAndUpdate(userId, {$pull: {'friends': friendId}},     
       {new: true})
+      if (!user){
+        throw new GraphQLError("user not found")
+      }
       return user
     },
 
