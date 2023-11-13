@@ -53,32 +53,59 @@ const resolvers = {
 
     //add friend
     addFriend: async (parent, { friendId, userId }, context, info) => {
-      const user = User.findByIdAndUpdate(userId, {$addToSet: {'friends': friendId},
+      const user = await User.findByIdAndUpdate(userId, {$addToSet: {'friends': friendId},
       new: true})
       return user
     },
 
     //delete friend
     deleteFriend: async (parent, { friendId, userId }, context, info) => {
-      const user = User.findByIdAndUpdate(userId, {$pull: {'friends': friendId}},
+      const user = await User.findByIdAndUpdate(userId, {$pull: {'friends': friendId}},
       {new: true})
+      return user
+    },
+
+    //add event
+    addEvent: async (parent, { userId, eventInput }, context, info) => {
+      //a user adds an event. It gets created in the DB, and the user adds it to their events array
+      const newEvent = await Event.create(eventInput)
+      const eventId = newEvent._id
+
+      const user = await User.findByIdAndUpdate(userId, {
+        $addToSet: {'events': eventId}
+      }, {new: true}, {raw: true})
+      console.log(user)
+      return newEvent
+    },
+
+    //for when a user finds an existing event and adds it to their event array
+    addExistingEvent: async (parent, { userId, eventId }, context, info) => {
+      //a user adds an event. It gets created in the DB, and the user adds it to their events array
+
+      const user = await User.findByIdAndUpdate(userId, {
+        $addToSet: {'events': eventId}
+      }, {new: true}).populate('events')
       return user
     },
 
     //update event
     updateEvent: async (parent, { eventId, eventInput }, context, info) => {
-      return null
+      //a user updates parts of an event. shouldn't require user id
+      const newEvent = await Event.findByIdAndUpdate(eventId, eventInput, {new: true})
+      return newEvent
     },
 
     //delete event
-    deleteEvent: async (parent, { eventId }, context, info) => {
-      return null
-    },
+    deleteEvent: async (parent, { userId, eventId }, context, info) => {
+      //again, sketchy. A user deletes an event. It is removed from the DB and all users' events array
+      const deletedEvent = await Event.findByIdAndDelete(eventId)
 
-    //add event
-    addEvent: async (parent, { eventInput }, context, info) => {
-      return null
+      await User.findByIdAndUpdate(userId, {
+        $pull: {'events': deletedEvent._id}
+      })
+      return deletedEvent
     }
+
   },
 };
 

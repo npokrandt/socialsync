@@ -18,6 +18,14 @@ const typeDefs = `
     endTime: String!
   }
 
+  input EventUpdateInput {
+    eventName: String
+    location: String
+    description: String
+    startTime: String
+    endTime: String
+  }
+
   type Event {
     _id: ID
     eventName: String!
@@ -47,12 +55,11 @@ const typeDefs = `
     addFriend(friendId: ID, userId: ID): User
     deleteFriend(friendId: ID, userId: ID): User
 
-    updateEvent(eventId: ID, eventInput: EventInput): Event
-    deleteEvent(eventId: ID): Event
-
-
-    addEvent(eventInput: EventInput): Event
-   
+    addEvent(eventInput: EventInput, userId: ID): Event
+    addExistingEvent(eventId: ID, userId: ID): User
+    updateEvent(eventId: ID, eventInput: EventUpdateInput): Event
+    deleteEvent(eventId: ID, userId: ID): Event
+  
   }
 `;
 
