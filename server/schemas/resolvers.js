@@ -1,22 +1,39 @@
 const { User, Event } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
+const { GraphQLError} = require('graphql')
 
 const resolvers = {
+  // ALL: add error handling
+  // ALL DELETE FUNCTIONS: add other deletion stuff
+  // add authentication handling to all that need it
+  // figure out why login and create user return user as null
   Query: {
     users: async () => {
       const users = await User.find({}).populate('friends').populate('events')
       return users
     },
     user: async (parent, { userId }, context, info) => {
-      const user = User.findById(userId).populate('friends').populate('events')
+      if (userId.length !== 24){
+        throw new GraphQLError('Invalid Id')
+      }
+      const user = await User.findById(userId)//.populate('friends').populate('events')
+      if (!user){
+        throw new GraphQLError('User not found')
+      }
       return user
-    },
+    }, 
     events: async () => {
       const events = await Event.find()
       return events
     },
     event: async (parent, { eventId }, context, info) => {
+      if (eventId.length !== 24){
+        throw new GraphQLError('Invalid Id')
+      }
       const event = await Event.findById(eventId)
+      if (!event){
+        throw new GraphQLError('Event not found')
+      }
       return event
     }
 
