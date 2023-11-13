@@ -3,7 +3,6 @@ const { signToken, AuthenticationError } = require('../utils/auth');
 const { GraphQLError} = require('graphql')
 
 const resolvers = {
-  // ALL: add error handling
   // ALL DELETE FUNCTIONS: add other deletion stuff
   // add authentication handling to all that need it
   // figure out why login and create user return user as null
@@ -107,23 +106,37 @@ const resolvers = {
     //add event
     addEvent: async (parent, { userId, eventInput }, context, info) => {
       //a user adds an event. It gets created in the DB, and the user adds it to their events array
+      const test = await User.findById(userId)
+      if(!test){
+        throw new GraphQLError("user not found")
+      }
+      //eventInput = {...eventInput}
       const newEvent = await Event.create(eventInput)
+      if (!newEvent){
+        throw new GraphQLError("event not found")
+      }
       const eventId = newEvent._id
 
-      const user = await User.findByIdAndUpdate(userId, {
+      await User.findByIdAndUpdate(userId, {
         $addToSet: {'events': eventId}
-      }, {new: true}, {raw: true})
-      console.log(user)
+      }, {new: true})
+
       return newEvent
     },
 
     //for when a user finds an existing event and adds it to their event array
     addExistingEvent: async (parent, { userId, eventId }, context, info) => {
       //a user adds an event. It gets created in the DB, and the user adds it to their events array
-
+      const event = await Event.findById(eventId)
+      if (!event){
+        throw new GraphQLError("event not found")
+      }
       const user = await User.findByIdAndUpdate(userId, {
         $addToSet: {'events': eventId}
       }, {new: true}).populate('events')
+      if (!user){
+        throw new GraphQLError("user not found")
+      }
       return user
     },
 
@@ -131,6 +144,9 @@ const resolvers = {
     updateEvent: async (parent, { eventId, eventInput }, context, info) => {
       //a user updates parts of an event. shouldn't require user id
       const newEvent = await Event.findByIdAndUpdate(eventId, eventInput, {new: true})
+      if (!newEvent){
+        throw new GraphQLError("event not found")
+      }
       return newEvent
     },
 
@@ -138,10 +154,13 @@ const resolvers = {
     deleteEvent: async (parent, { userId, eventId }, context, info) => {
       //again, sketchy. A user deletes an event. It is removed from the DB and all users' events array
       const deletedEvent = await Event.findByIdAndDelete(eventId)
+      if (!deletedEvent){
+        throw new GraphQLError("event not found")
+      }
 
-      await User.findByIdAndUpdate(userId, {
-        $pull: {'events': deletedEvent._id}
-      })
+      //await User.findByIdAndUpdate(userId, {
+        //$pull: {'events': deletedEvent._id}
+      //})
       return deletedEvent
     }
 
