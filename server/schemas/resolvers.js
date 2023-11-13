@@ -22,14 +22,14 @@ const resolvers = {
       return user
     }, 
     events: async () => {
-      const events = await Event.find()
+      const events = await Event.find().populate('users')
       return events
     },
     event: async (parent, { eventId }, context, info) => {
       if (eventId.length !== 24){
         throw new GraphQLError('Invalid Id')
       }
-      const event = await Event.findById(eventId)
+      const event = await Event.findById(eventId).populate('users')
       if (!event){
         throw new GraphQLError('Event not found')
       }
@@ -106,11 +106,11 @@ const resolvers = {
     //add event
     addEvent: async (parent, { userId, eventInput }, context, info) => {
       //a user adds an event. It gets created in the DB, and the user adds it to their events array
-      const test = await User.findById(userId)
-      if(!test){
+      const user = await User.findById(userId)
+      if(!user){
         throw new GraphQLError("user not found")
       }
-      //eventInput = {...eventInput}
+      eventInput = {...eventInput, users: [userId]}
       const newEvent = await Event.create(eventInput)
       if (!newEvent){
         throw new GraphQLError("event not found")
@@ -127,16 +127,19 @@ const resolvers = {
     //for when a user finds an existing event and adds it to their event array
     addExistingEvent: async (parent, { userId, eventId }, context, info) => {
       //a user adds an event. It gets created in the DB, and the user adds it to their events array
-      const event = await Event.findById(eventId)
+      const test = await User.findById(userId)
+      if (!test){
+        throw new GraphQLError("user not found")
+      }
+      const event = await Event.findByIdAndUpdate(eventId,  {
+        $addToSet: {'users': userId}
+      }, {new: true})
       if (!event){
         throw new GraphQLError("event not found")
       }
       const user = await User.findByIdAndUpdate(userId, {
         $addToSet: {'events': eventId}
       }, {new: true}).populate('events')
-      if (!user){
-        throw new GraphQLError("user not found")
-      }
       return user
     },
 

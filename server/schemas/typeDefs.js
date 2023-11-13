@@ -33,6 +33,7 @@ const typeDefs = `
     description: String
     startTime: String!
     endTime: String!
+    users: [User]
   }
 
   type Auth {
