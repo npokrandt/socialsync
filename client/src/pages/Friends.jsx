@@ -22,13 +22,13 @@ const Friends = (props) => {
         <Header>Friends Page</Header>
         {!userID && (
           <p>
-            <Link to="/login">Login</Link>/<Link to="/signup">Sign up</Link> to see friends list
+            Please <Link to="/login">log in</Link> or <Link to="/signup">sign up</Link> to see your friends list.
           </p>
         )}
-        {!friends && <p>Go get yourself some friends bro</p>}
+        {!friends && <p>Seems pretty lonely around here...</p>}
         <ul>
           {friends.map((friend) => (
-            <li> {friend.username}</li>
+            <li>{friend.username}</li>
           ))}
         </ul>
       </main>
