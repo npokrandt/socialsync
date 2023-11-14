@@ -67,12 +67,30 @@ const resolvers = {
 
     //remove user
     deleteUser: async (parent, { userId }, context, info) => {
-      // TODO: remove user from all friend lists and an event IF they are the only user attached to it
       const deletedUser = await User.findByIdAndDelete(userId)
-
+      const friends = deletedUser.friends
+      const events = deletedUser.events
 
       if (!deletedUser){
         throw new GraphQLError("user not found")
+      }
+
+      //delete user id from all their friends' lists
+      for (const friend of friends){
+        await User.findByIdAndUpdate(friend._id, {
+          $pull: {'friends': deletedUser._id}
+        })
+      }
+
+      //check length of the users field of all events the user was a part of. Delete any event with no users attached
+      for (const event of events){
+        //remove the user from the users array of the event
+        const eventFound = await Event.findById(event._id)
+        const userCount = eventFound.users.length
+        //if there is only one user in there, it must be the recently deleted user
+        if (userCount === 1){
+          await Event.findByIdAndDelete(eventFound._id)
+        }
       }
       return deletedUser
     },
@@ -164,10 +182,14 @@ const resolvers = {
       if (!deletedEvent){
         throw new GraphQLError("event not found")
       }
+      const users = deletedEvent.users
 
-      //await User.findByIdAndUpdate(userId, {
-        //$pull: {'events': deletedEvent._id}
-      //})
+      //removes the event ID from the event array of any user that was part of the event
+      for (const user of users){
+        await User.findByIdAndUpdate(user._id, {
+          $pull: {'events': deletedEvent._id}
+        })
+      }
       return deletedEvent
     }
 
