@@ -18,6 +18,14 @@ const typeDefs = `
     endTime: String!
   }
 
+  input EventUpdateInput {
+    eventName: String
+    location: String
+    description: String
+    startTime: String
+    endTime: String
+  }
+
   type Event {
     _id: ID
     eventName: String!
@@ -25,6 +33,7 @@ const typeDefs = `
     description: String
     startTime: String!
     endTime: String!
+    users: [User]
   }
 
   type Auth {
@@ -42,17 +51,16 @@ const typeDefs = `
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
-    removeUser(userId: ID!): User
+    deleteUser(userId: ID!): User
 
     addFriend(friendId: ID, userId: ID): User
     deleteFriend(friendId: ID, userId: ID): User
 
-    updateEvent(eventId: ID, eventInput: EventInput): Event
-    deleteEvent(eventId: ID): Event
-
-
-    addEvent(eventInput: EventInput): Event
-   
+    addEvent(eventInput: EventInput, userId: ID): Event
+    addExistingEvent(eventId: ID, userId: ID): User
+    updateEvent(eventId: ID, eventInput: EventUpdateInput): Event
+    deleteEvent(eventId: ID, userId: ID): Event
+  
   }
 `;
 
