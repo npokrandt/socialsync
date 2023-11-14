@@ -5,7 +5,6 @@ const { GraphQLError} = require('graphql')
 const resolvers = {
   // ALL DELETE FUNCTIONS: add other deletion stuff
   // add authentication handling to all that need it
-  // figure out why login and create user return user as null
   Query: {
     users: async () => {
       const users = await User.find({}).populate('friends').populate('events')
@@ -70,6 +69,8 @@ const resolvers = {
     deleteUser: async (parent, { userId }, context, info) => {
       // TODO: remove user from all friend lists and an event IF they are the only user attached to it
       const deletedUser = await User.findByIdAndDelete(userId)
+
+
       if (!deletedUser){
         throw new GraphQLError("user not found")
       }
@@ -90,6 +91,8 @@ const resolvers = {
       if (!user){
         throw new GraphQLError("user not found")
       }
+      //add user to their friend's friendlist
+      await User.findByIdAndUpdate(friendId, {$addToSet: {'friends': userId}},{new: true})
       return user
     },
 
@@ -100,6 +103,7 @@ const resolvers = {
       if (!user){
         throw new GraphQLError("user not found")
       }
+      await User.findByIdAndUpdate(friendId, {$pull: {'friends': userId}})
       return user
     },
 
