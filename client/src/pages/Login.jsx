@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 
+import Header from '../components/Header';
+
 import Auth from '../utils/auth';
 
 const Login = (props) => {
@@ -42,6 +44,9 @@ const Login = (props) => {
 
   return (
     <main className="flex-row justify-center mb-4">
+
+      <Header>Login Page</Header>
+
       <div className="col-12 col-lg-10">
         <div className="card">
           <h4 className="card-header bg-dark text-light p-2">Login</h4>

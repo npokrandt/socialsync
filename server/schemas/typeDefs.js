@@ -1,6 +1,7 @@
 
 
 const typeDefs = `
+
   type User {
     _id: ID
     username: String!
@@ -10,12 +11,17 @@ const typeDefs = `
     events: [Event]
   }
 
+  scalar Date   
+    type MyType {
+        created: Date
+    }
+
   input EventInput {
     eventName: String!
     location: String
     description: String
-    startTime: String!
-    endTime: String!
+    startTime: Date!
+    endTime: Date!
   }
 
   type Event {
@@ -23,8 +29,8 @@ const typeDefs = `
     eventName: String!
     location: String
     description: String
-    startTime: String!
-    endTime: String!
+    startTime: Date!
+    endTime: Date!
   }
 
   type Auth {

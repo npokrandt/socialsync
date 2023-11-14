@@ -3,17 +3,19 @@ import { QUERY_PROFILES } from '../utils/queries';
 
 import Header from '../components/Header';
 
-const Home = (props) => {
+const Friends = (props) => {
   const { loading, data } = useQuery(QUERY_PROFILES);
   const profiles = data?.profiles || [];
 
   return (
     <>
     <main>
-    <Header>Home Page</Header>
+    <Header>Friends Page</Header>
     </main>
     </>
   );
 };
 
-export default Home;
+export default Friends;
+
+
