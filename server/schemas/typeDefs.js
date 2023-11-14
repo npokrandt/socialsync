@@ -7,8 +7,16 @@ const typeDefs = `
     username: String!
     email: String!
     password: String!
+    avatar: String
     friends: [User]
     events: [Event]
+  }
+
+  input UserInput {
+    username: String
+    email: String
+    password: String
+    avatar: String
   }
 
   scalar Date   
@@ -39,6 +47,7 @@ const typeDefs = `
     description: String
     startTime: Date!
     endTime: Date!
+    users: [User]
   }
 
   type Auth {
@@ -56,6 +65,7 @@ const typeDefs = `
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
+    updateUser(userId: ID, userInput: UserInput): User
     deleteUser(userId: ID!): User
 
     addFriend(friendId: ID, userId: ID): User

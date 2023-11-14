@@ -3,7 +3,6 @@ const { signToken, AuthenticationError } = require('../utils/auth');
 const { GraphQLError} = require('graphql')
 
 const resolvers = {
-  // ALL DELETE FUNCTIONS: add other deletion stuff
   // add authentication handling to all that need it
   Query: {
     users: async () => {
@@ -11,6 +10,9 @@ const resolvers = {
       return users
     },
     user: async (parent, { userId }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       if (userId.length !== 24){
         throw new GraphQLError('Invalid Id')
       }
@@ -25,6 +27,9 @@ const resolvers = {
       return events
     },
     event: async (parent, { eventId }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       if (eventId.length !== 24){
         throw new GraphQLError('Invalid Id')
       }
@@ -65,20 +70,56 @@ const resolvers = {
       }
     },
 
+    //update user
+    updateUser: async (parent, { userId, userInput }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
+      const updatedUser = await User.findByIdAndUpdate(userId, userInput)
+      if (!updatedUser){
+        throw new GraphQLError("user not found")
+      }
+      return updatedUser
+    },
+
     //remove user
     deleteUser: async (parent, { userId }, context, info) => {
-      // TODO: remove user from all friend lists and an event IF they are the only user attached to it
+      if (!context.user){
+        throw AuthenticationError
+      }
       const deletedUser = await User.findByIdAndDelete(userId)
-
+      const friends = deletedUser.friends
+      const events = deletedUser.events
 
       if (!deletedUser){
         throw new GraphQLError("user not found")
+      }
+
+      //delete user id from all their friends' lists
+      for (const friend of friends){
+        await User.findByIdAndUpdate(friend._id, {
+          $pull: {'friends': deletedUser._id}
+        })
+      }
+
+      //check length of the users field of all events the user was a part of. Delete any event with no users attached
+      for (const event of events){
+        //remove the user from the users array of the event
+        const eventFound = await Event.findById(event._id)
+        const userCount = eventFound.users.length
+        //if there is only one user in there, it must be the recently deleted user
+        if (userCount === 1){
+          await Event.findByIdAndDelete(eventFound._id)
+        }
       }
       return deletedUser
     },
 
     //add friend
     addFriend: async (parent, { friendId, userId }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       if (userId === friendId){
         throw new GraphQLError("User cannot be their own friend")
       }
@@ -98,6 +139,9 @@ const resolvers = {
 
     //delete friend
     deleteFriend: async (parent, { friendId, userId }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       const user = await User.findByIdAndUpdate(userId, {$pull: {'friends': friendId}},     
       {new: true})
       if (!user){
@@ -109,6 +153,9 @@ const resolvers = {
 
     //add event
     addEvent: async (parent, { userId, eventInput }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       //a user adds an event. It gets created in the DB, and the user adds it to their events array
       const user = await User.findById(userId)
       if(!user){
@@ -130,6 +177,9 @@ const resolvers = {
 
     //for when a user finds an existing event and adds it to their event array
     addExistingEvent: async (parent, { userId, eventId }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       //a user adds an event. It gets created in the DB, and the user adds it to their events array
       const test = await User.findById(userId)
       if (!test){
@@ -149,6 +199,9 @@ const resolvers = {
 
     //update event
     updateEvent: async (parent, { eventId, eventInput }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       //a user updates parts of an event. shouldn't require user id
       const newEvent = await Event.findByIdAndUpdate(eventId, eventInput, {new: true})
       if (!newEvent){
@@ -159,15 +212,22 @@ const resolvers = {
 
     //delete event
     deleteEvent: async (parent, { userId, eventId }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       //again, sketchy. A user deletes an event. It is removed from the DB and all users' events array
       const deletedEvent = await Event.findByIdAndDelete(eventId)
       if (!deletedEvent){
         throw new GraphQLError("event not found")
       }
+      const users = deletedEvent.users
 
-      //await User.findByIdAndUpdate(userId, {
-        //$pull: {'events': deletedEvent._id}
-      //})
+      //removes the event ID from the event array of any user that was part of the event
+      for (const user of users){
+        await User.findByIdAndUpdate(user._id, {
+          $pull: {'events': deletedEvent._id}
+        })
+      }
       return deletedEvent
     }
 

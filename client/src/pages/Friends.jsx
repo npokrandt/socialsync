@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import AuthService from "../utils/auth";
 import { useQuery } from "@apollo/client";
-import { QUERY_USER_FRIENDS } from "../utils/queries";
+import { QUERY_USER } from "../utils/queries";
 
 import Header from "../components/Header";
 
 const Friends = () => {
   const userId = AuthService.getProfile()?.data?._id;
-  const { loading, data } = useQuery(QUERY_USER_FRIENDS, {
+  const { loading, data } = useQuery(QUERY_USER, {
     variables: {
       userId,
     },

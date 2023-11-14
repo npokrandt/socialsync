@@ -1,11 +1,11 @@
 import { useQuery } from '@apollo/client';
-import { QUERY_PROFILES } from '../utils/queries';
+//import { QUERY_PROFILES } from '../utils/queries';
 
 import Header from '../components/Header';
 
 const Home = (props) => {
-  const { loading, data } = useQuery(QUERY_PROFILES);
-  const profiles = data?.profiles || [];
+  //const { loading, data } = useQuery(QUERY_PROFILES);
+  //const profiles = data?.profiles || [];
 
   return (
     <>
