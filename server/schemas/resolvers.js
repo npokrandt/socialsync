@@ -20,7 +20,7 @@ const resolvers = {
         throw new GraphQLError('User not found')
       }
       return user
-    }, 
+    },
     events: async () => {
       const events = await Event.find().populate('users')
       return events
