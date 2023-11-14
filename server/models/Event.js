@@ -14,7 +14,10 @@ const eventSchema = new Schema({
     endTime: {
         type: Date,
         required: true
-    }
+    },
+    users: [
+        { type: Schema.Types.ObjectId, ref: 'User' }
+    ]
 }) 
 
 const Event = model('Event', eventSchema)
