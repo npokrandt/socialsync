@@ -65,6 +65,15 @@ const resolvers = {
       }
     },
 
+    updateUser: async (parent, { userId, userInput }, context, info) => {
+      console.log(userInput)
+      const updatedUser = await User.findByIdAndUpdate(userId, userInput)
+      if (!updatedUser){
+        throw new GraphQLError("user not found")
+      }
+      return updatedUser
+    },
+
     //remove user
     deleteUser: async (parent, { userId }, context, info) => {
       const deletedUser = await User.findByIdAndDelete(userId)
