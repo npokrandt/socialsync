@@ -28,8 +28,8 @@ const typeDefs = `
     eventName: String
     location: String
     description: String
-    startTime: String
-    endTime: String
+    startTime: Date
+    endTime: Date
   }
 
   type Event {
@@ -37,8 +37,8 @@ const typeDefs = `
     eventName: String!
     location: String
     description: String
-    startTime: String!
-    endTime: String!
+    startTime: Date!
+    endTime: Date!
   }
 
   type Auth {

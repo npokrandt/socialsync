@@ -4,7 +4,6 @@ import { useQuery } from "@apollo/client";
 import { QUERY_USER_FRIENDS } from "../utils/queries";
 
 import Header from "../components/Header";
-console.log();
 
 const Friends = (props) => {
   const userID = AuthService.getProfile()?.data?._id;
