@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { QUERY_SINGLE_PROFILE } from '../utils/queries';
+// import { QUERY_SINGLE_PROFILE } from '../utils/queries';
 
 import Header from '../components/Header';
 

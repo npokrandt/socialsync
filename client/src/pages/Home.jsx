@@ -11,6 +11,9 @@ const Home = (props) => {
     <>
     <main>
     <Header>Home Page</Header>
+    <div>
+      
+    </div>
     </main>
     </>
   );
