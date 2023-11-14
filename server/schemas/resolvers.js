@@ -3,7 +3,6 @@ const { signToken, AuthenticationError } = require('../utils/auth');
 const { GraphQLError} = require('graphql')
 
 const resolvers = {
-  // ALL DELETE FUNCTIONS: add other deletion stuff
   // add authentication handling to all that need it
   Query: {
     users: async () => {
@@ -11,6 +10,9 @@ const resolvers = {
       return users
     },
     user: async (parent, { userId }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       if (userId.length !== 24){
         throw new GraphQLError('Invalid Id')
       }
@@ -25,6 +27,9 @@ const resolvers = {
       return events
     },
     event: async (parent, { eventId }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       if (eventId.length !== 24){
         throw new GraphQLError('Invalid Id')
       }
@@ -65,8 +70,11 @@ const resolvers = {
       }
     },
 
+    //update user
     updateUser: async (parent, { userId, userInput }, context, info) => {
-      console.log(userInput)
+      if (!context.user){
+        throw AuthenticationError
+      }
       const updatedUser = await User.findByIdAndUpdate(userId, userInput)
       if (!updatedUser){
         throw new GraphQLError("user not found")
@@ -76,6 +84,9 @@ const resolvers = {
 
     //remove user
     deleteUser: async (parent, { userId }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       const deletedUser = await User.findByIdAndDelete(userId)
       const friends = deletedUser.friends
       const events = deletedUser.events
@@ -106,6 +117,9 @@ const resolvers = {
 
     //add friend
     addFriend: async (parent, { friendId, userId }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       if (userId === friendId){
         throw new GraphQLError("User cannot be their own friend")
       }
@@ -125,6 +139,9 @@ const resolvers = {
 
     //delete friend
     deleteFriend: async (parent, { friendId, userId }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       const user = await User.findByIdAndUpdate(userId, {$pull: {'friends': friendId}},     
       {new: true})
       if (!user){
@@ -136,6 +153,9 @@ const resolvers = {
 
     //add event
     addEvent: async (parent, { userId, eventInput }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       //a user adds an event. It gets created in the DB, and the user adds it to their events array
       const user = await User.findById(userId)
       if(!user){
@@ -157,6 +177,9 @@ const resolvers = {
 
     //for when a user finds an existing event and adds it to their event array
     addExistingEvent: async (parent, { userId, eventId }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       //a user adds an event. It gets created in the DB, and the user adds it to their events array
       const test = await User.findById(userId)
       if (!test){
@@ -176,6 +199,9 @@ const resolvers = {
 
     //update event
     updateEvent: async (parent, { eventId, eventInput }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       //a user updates parts of an event. shouldn't require user id
       const newEvent = await Event.findByIdAndUpdate(eventId, eventInput, {new: true})
       if (!newEvent){
@@ -186,6 +212,9 @@ const resolvers = {
 
     //delete event
     deleteEvent: async (parent, { userId, eventId }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
       //again, sketchy. A user deletes an event. It is removed from the DB and all users' events array
       const deletedEvent = await Event.findByIdAndDelete(eventId)
       if (!deletedEvent){
