@@ -3,3 +3,31 @@
 .header_1_style {
   margin-left: 2em;
 }
+.header_flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+button {
+  background-color: rgba(155, 76, 175, 0.527);
+  padding: 10px;
+  color: black;
+  margin: 10px;
+  border-radius: 10px;
+}
+a:link {
+   text-decoration: none;
+   }
+   a:visited { text-decoration: none; }
+   a:hover { text-decoration: none; }
+   a {
+    color: black;
+  }
+  nav {
+    background-color: rgba(137, 43, 226, 0.349);
+  }
+  img {
+    margin: 20px;
+    border-radius: 150px;
+    border: 2px solid black;
+  }

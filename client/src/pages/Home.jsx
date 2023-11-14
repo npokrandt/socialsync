@@ -11,8 +11,13 @@ const Home = (props) => {
     <>
     <main>
     <Header>Home Page</Header>
+    <div>
+      <img src='https://placehold.co/250x250'/>
+      
+    </div>
     </main>
     </>
+    
   );
 };
 
