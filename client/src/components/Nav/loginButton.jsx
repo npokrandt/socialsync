@@ -5,7 +5,7 @@ import AuthService from "../../utils/auth";
 const LoginButton = () => { 
     
     const user = AuthService.getProfile()?.data
-    console.log(user)
+    //console.log(user)
 
     const logoutHandler = () => {
       if (user){
