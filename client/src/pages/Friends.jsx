@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import AuthService from "../utils/auth";
 import { useQuery } from "@apollo/client";
 import { QUERY_USER } from "../utils/queries";
-
+import "./pages.css";
 import Header from "../components/Header";
 
 const Friends = () => {
@@ -17,10 +17,10 @@ const Friends = () => {
 
   return (
     <main>
-      <Header>Friends Page</Header>
+      <Header>Friends</Header>
       {!userId && (
         <p>
-          Please <Link to="/login">log in</Link> or <Link to="/signup">sign up</Link> to see your friends list.
+          Please <Link className="lbtn" to="/login">log in</Link> or <Link className="lbtn" to="/signup">sign up</Link> to see your friends list.
         </p>
       )}
       {friends.length == 0 && userId && <p>Seems pretty lonely around here...</p>}

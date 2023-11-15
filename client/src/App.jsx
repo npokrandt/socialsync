@@ -53,7 +53,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Nav />
-        <div style={view_height}>
+        <div className='mainpage' style={view_height}>
           <Outlet />
         </div>
       <Footer />
