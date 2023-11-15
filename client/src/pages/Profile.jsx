@@ -7,14 +7,25 @@ import Calender from '../components/Calender';
 import Auth from '../utils/auth';
 
 const Profile = () => {
-  const userId = Auth.getProfile()?.data?._id
-  console.log(userId)
-
+  const loggedInUserId = Auth.getProfile()?.data?._id
+  const { userId } = useParams()
   const {loading, error, data} = useQuery(QUERY_USER, {
     variables: {userId}
   })
-  console.log(data)
 
+  const mappedEvents = data?.user?.events?.map(({ _id, startTime, endTime, eventName }) => {
+    return {
+    
+        event_id: _id,
+        title: eventName,
+        start: new Date(startTime),
+        end: new Date(endTime),
+      
+    }
+
+  }) || []
+
+console.log(mappedEvents)
   return (
     <div>
       <Header>{data?.user?.username || ""}</Header>
@@ -23,7 +34,7 @@ const Profile = () => {
         <img className='profile' src='https://placehold.co/250x250' />
       </div>
       <div>
-       <Calender />
+       <Calender events = {mappedEvents} />
       </div>
 
     </div>

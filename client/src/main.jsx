@@ -25,14 +25,14 @@ const router = createBrowserRouter([
          path: '/signup',
          element: <Signup />
        },
-      //{
-      //   path: '/users/:userId',
-      //   element: <Profile />
-      // },
       {
-        path: '/profile',
+        path: '/users/:userId',
         element: <Profile />
       },
+      // {
+      //   path: '/profile',
+      //   element: <Profile />
+      // },
       {
         path: '/friends',
         element: <Friends />

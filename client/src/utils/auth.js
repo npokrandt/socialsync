@@ -23,7 +23,8 @@ class AuthService {
   login(idToken) {
     // Saves user token to localStorage and reloads the application for logged in status to take effect
     localStorage.setItem('id_token', idToken);
-    window.location.assign('/profile');
+    const user_id = this.getProfile()?.data?._id
+    window.location.assign(`/users/${user_id}`);
   }
 
   logout() {
