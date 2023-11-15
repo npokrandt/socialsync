@@ -28,7 +28,7 @@ a {
 nav {
   background-color: rgba(137, 43, 226, 0.349);
 }
-img {
+.profile {
   margin: 20px;
   border-radius: 150px;
   border: 2px solid black;
