@@ -1,15 +1,23 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-// import { QUERY_SINGLE_PROFILE } from '../utils/queries';
+import { QUERY_USER } from '../utils/queries';
 
 import Header from '../components/Header';
 import Calender from '../components/Calender';
+import Auth from '../utils/auth';
 
 const Profile = () => {
+  const userId = Auth.getProfile()?.data?._id
+  console.log(userId)
+
+  const {loading, error, data} = useQuery(QUERY_USER, {
+    variables: {userId}
+  })
+  console.log(data)
 
   return (
     <div>
-      <Header>Profile Page</Header>
+      <Header>{data?.user?.username || ""}</Header>
 
       <div>
         <img src='https://placehold.co/250x250' />
@@ -21,5 +29,6 @@ const Profile = () => {
     </div>
   );
 };
+
 
 export default Profile;
