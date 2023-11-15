@@ -18,6 +18,10 @@
     "concurrently": "^8.2.0"
   },
   "dependencies": {
+    "@aldabil/react-scheduler": "^2.7.26",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.18",
     "antd": "^5.11.1"
   }
 }
