@@ -12,7 +12,7 @@ const Profile = () => {
       <Header>Profile Page</Header>
 
       <div>
-        <img src='https://placehold.co/250x250' />
+        <img className='profile' src='https://placehold.co/250x250' />
       </div>
       <div>
        <Calender />

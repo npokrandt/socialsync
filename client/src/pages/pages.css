@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree&display=swap');
+
+p, .getstartedbtn {
+  font-family: 'Figtree', sans-serif;
+}
+
+.title {
+  color: purple;
+}
+
+.calendar {
+  border: 4px solid purple;
+}
+
+.getstartedbtn {
+  background-color: rgba(155, 76, 175, 0.527);
+}
