@@ -32,7 +32,8 @@ const MenuBar = () => {
       mode="horizontal"
       items={items}
       style={menuStyle}
-    />)
+    />
+  )
 };
 
 export default MenuBar;
