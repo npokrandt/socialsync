@@ -20,19 +20,17 @@ export const QUERY_USERS = gql`
 `;
 
 export const QUERY_NON_FRIENDS = gql`
-  query NonFriends {
-    nonFriends {
+  query NonFriends($userId: ID!) {
+    nonFriends(userId: $userId) {
       username
       email
       _id
       avatar
       friends {
         _id
-        username
       }
       events {
         _id
-        eventName
       }
     }
   }
