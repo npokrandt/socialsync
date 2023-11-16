@@ -40,6 +40,9 @@ const Friends = () => {
       await addFriendM({
         variables: {userId, friendId}
       });
+      
+      //until we can get the "add friends" list to update, this at least disables the button
+      e.target.disabled = true
 
     } catch (err) {
       console.error(err);
