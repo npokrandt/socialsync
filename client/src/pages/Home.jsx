@@ -1,5 +1,4 @@
 import "./pages.css";
-import calendar from "/calendar.png"
 import Header from "../components/Header"
 
 const Home = () => {
