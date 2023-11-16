@@ -1,6 +1,7 @@
-.header_1_style {
-  margin-left: 2em;
+:root {
+  margin: 5px;
 }
+
 .header_flex {
   display: flex;
   justify-content: space-between;

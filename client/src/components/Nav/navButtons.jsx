@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom'
 import AuthService from "../../utils/auth";
 
-const LoginButton = () => { 
+ export const LoginButton = () => { 
     
     const user = AuthService.getProfile()?.data
     //console.log(user)
@@ -19,4 +19,13 @@ const LoginButton = () => {
     
 } 
 
-export default LoginButton
+export const SignInButton = () => {
+  return (
+    <button>
+      <Link to="/signup">sign up</Link>
+  
+    </button>
+  )
+  
+  }
+  

@@ -1,6 +1,6 @@
 import Auth from '../../utils/auth';
 import './nav.css'
-import LoginButton from './loginButton'
+import { LoginButton, SignInButton } from './navButtons';
 import MenuBar from './menuBar';
 
 const Nav = (props) => {
@@ -11,11 +11,14 @@ const Nav = (props) => {
   return (
     <nav>
       <div className='header_flex'>
-      <h1 className='header_1_style'>
-        SocialSync
-      </h1> 
-    <LoginButton/>
-    </div>
+        <h1>
+          SocialSync
+        </h1>
+        <div>
+          <LoginButton />
+          <SignInButton />
+        </div>
+      </div>
       <MenuBar />
     </nav>
   )
