@@ -1,5 +1,3 @@
-
-
 const Header = (props) => {
   return (
     <header className='headerdiv'>

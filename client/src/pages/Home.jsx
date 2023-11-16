@@ -1,13 +1,10 @@
 import "./pages.css";
 import Header from "../components/Header"
 
+
 const Home = () => {
   // this could be more dry
-  return (
-    <>
-      <div className="h_style">
-        <Header>Welcome to SocialSync</Header>
-      </div>
+  <>
       <div className="home_grid">
         <section className="section_sidebar">
           <div className="gap_it">
