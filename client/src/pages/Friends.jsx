@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import AuthService from "../utils/auth";
 import { useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { QUERY_USERS, QUERY_USER, } from "../utils/queries";
+import { ADD_FRIEND } from "../utils/mutations";
 import "./pages.css";
 import Header from "../components/Header";
 
@@ -23,10 +25,25 @@ const Friends = () => {
     const others = data?.users || []
     return others
   }
-  
+
   const userId = AuthService.getProfile()?.data?._id;
   const friends = getFriends(userId)
   const others = getOthers()
+  const [addFriendM] = useMutation(ADD_FRIEND)
+
+  const addFriend = async (e) => {
+    const friendId = e.target.name
+    
+    try {
+      await addFriendM({
+        variables: {userId, friendId}
+      });
+
+    } catch (err) {
+      console.error(err);
+    }
+    //console.log(e.target.name)
+  }  
 
   return (
     <main>
@@ -46,7 +63,7 @@ const Friends = () => {
       <ul>
       {others.map((other) => (
         <>
-          <li key={Math.random()} >{other.username}</li><button className="btn">Add Friend</button>
+          <li key={Math.random()} >{other.username}</li><button className="btn" name={other._id} onClick={addFriend}>Add Friend</button>
         </>
         ))}
       </ul>
