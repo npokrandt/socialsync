@@ -1,23 +1,14 @@
-
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import AuthService from "../../utils/auth";
 
- export const LoginButton = () => { 
-    
-    const user = AuthService.getProfile()?.data
-    //console.log(user)
-
-    const logoutHandler = () => {
-      if (user){
-        AuthService.logout()
-      }
-    }
-    return (
-      
-      <button onClick={logoutHandler}>{user && "Log out"}{!user && <Link to='/login'>Login</Link>} </button>
-    )
-    
-} 
+export const LoginButton = () => {
+  const loggedIn = AuthService.loggedIn()
+  return (
+    <button onClick={() => {if(loggedIn) AuthService.logout()}}>
+      {loggedIn ? "Log out" : <Link to="/login">Log in</Link>}
+    </button>
+  )
+};
 
 export const SignInButton = () => {
   const user = AuthService.getProfile()?.data

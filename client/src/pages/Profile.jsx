@@ -7,9 +7,8 @@ import Calender from '../components/Calender';
 import Auth from '../utils/auth';
 
 const Profile = () => {
-  const loggedInUserId = Auth.getProfile()?.data?._id
-  const { userId } = useParams()
-  const {loading, error, data} = useQuery(QUERY_USER, {
+  const {userId} = useParams()
+  const {data} = useQuery(QUERY_USER, {
     variables: {userId}
   })
 
@@ -25,7 +24,6 @@ const Profile = () => {
 
   }) || []
 
-console.log(mappedEvents)
   return (
     <div>
       <Header>{data?.user?.username || ""}</Header>
