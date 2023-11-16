@@ -4,12 +4,17 @@ import Header from "../components/Header"
 
 const Home = () => {
   // this could be more dry
-  <>
+  return (
+    <>
+      <div className="h_style" >
+        <Header >Welcome to SocialSync</Header>
+      </div>
+
       <div className="home_grid">
         <section className="section_sidebar">
           <div className="gap_it">
             <a href="#elevator_pitch"
-            className="anchor_style">Elevator Pitch</a>
+              className="anchor_style">Elevator Pitch</a>
             <br />
             <a href="#concept" className="anchor_style">Concept</a>
             <br />
@@ -45,8 +50,9 @@ const Home = () => {
         </main>
       </div>
     </>
-  );
+  )
 };
+
 
 export default Home;
 
