@@ -14,7 +14,7 @@ const Profile = () => {
 
   const mappedEvents = data?.user?.events?.map(({ _id, startTime, endTime, eventName }) => {
     return {
-    
+   
         event_id: _id,
         title: eventName,
         start: new Date(startTime),
