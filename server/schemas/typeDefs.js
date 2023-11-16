@@ -75,7 +75,7 @@ const typeDefs = `
     addEvent(eventInput: EventInput, userId: ID): Event
     addExistingEvent(eventId: ID, userId: ID): User
     updateEvent(eventId: ID, eventInput: EventUpdateInput): Event
-    deleteEvent(eventId: ID, userId: ID): Event
+    deleteEvent(eventId: ID): Event
   
   }
 `;
