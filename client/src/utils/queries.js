@@ -19,6 +19,25 @@ export const QUERY_USERS = gql`
   }
 `;
 
+export const QUERY_NON_FRIENDS = gql`
+  query NonFriends {
+    nonFriends {
+      username
+      email
+      _id
+      avatar
+      friends {
+        _id
+        username
+      }
+      events {
+        _id
+        eventName
+      }
+    }
+  }
+`;
+
 export const QUERY_USER = gql`
   query User($userId: ID!) {
     user(userId: $userId) {

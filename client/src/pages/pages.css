@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree&display=swap');
 
 .lbtn {
     border: 1px solid black;
@@ -26,8 +27,6 @@
     background-color: rgba(155, 76, 175, 0.527) !important;
     border: 2px solid black;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Figtree&display=swap');
 
 p, .getstartedbtn {
   font-family: 'Figtree', sans-serif;

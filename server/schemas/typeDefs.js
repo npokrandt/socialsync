@@ -57,6 +57,7 @@ const typeDefs = `
 
   type Query {
     users: [User]!
+    nonFriends(userId: ID!): [User]!
     user(userId: ID!): User
     events: [Event]!
     event(eventId: ID!): Event

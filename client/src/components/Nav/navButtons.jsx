@@ -20,11 +20,14 @@ import AuthService from "../../utils/auth";
 } 
 
 export const SignInButton = () => {
+  const user = AuthService.getProfile()?.data
   return (
-    <button>
+    <>
+    {!user && <button>
       <Link to="/signup">sign up</Link>
   
-    </button>
+    </button>}
+    </>
   )
   
   }
