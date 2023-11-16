@@ -47,3 +47,53 @@ p, .getstartedbtn {
 
 /* home page css */
 
+.home_grid {
+  display: grid;
+  grid-template-columns: 175px 1fr;
+  gap: 1em;
+}
+
+.main_grid {
+display: grid;
+gap: 4em;
+margin: 1rem;
+
+}
+
+.section_sidebar {
+  margin: .5em;
+  align-self: start;
+  position: sticky;
+  top: 100px;
+
+}
+.gap_it {
+  display: grid;
+  
+}
+
+.h_style {
+  text-align: center;
+  padding: 2rem 0em 1rem 0em;
+}
+
+.anchor_style {
+  border: 1px black solid;
+  border-radius: 1em;
+  padding: 5px 10px 5px 10px;
+}
+
+@media (max-width: 732px) {
+  .home_grid {
+    grid-template-columns: 1fr;
+  }
+  .section_sidebar {
+    position: static;
+  }
+  .anchor_style {
+    text-align: center;
+    margin: 0 50px 0 50px;
+
+  }
+}
+
