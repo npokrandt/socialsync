@@ -232,7 +232,7 @@ const resolvers = {
     },
 
     //delete event
-    deleteEvent: async (parent, { userId, eventId }, context, info) => {
+    deleteEvent: async (parent, { eventId }, context, info) => {
       if (!context.user){
         throw AuthenticationError
       }
