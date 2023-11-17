@@ -11,9 +11,15 @@ export const LoginButton = () => {
 };
 
 export const SignInButton = () => {
+  const user = AuthService.getProfile()?.data
   return (
-    <button>
-      <Link to="/signup">Sign up</Link>
-    </button>
-  );
-};
+    <>
+    {!user && <button>
+      <Link to="/signup">sign up</Link>
+  
+    </button>}
+    </>
+  )
+  
+  }
+  

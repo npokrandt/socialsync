@@ -9,6 +9,27 @@ const resolvers = {
       const users = await User.find({}).populate('friends').populate('events')
       return users
     },
+    nonFriends: async (parent, { userId }, context, info) => {
+      if (!context.user){
+        throw AuthenticationError
+      }
+      if (userId.length !== 24){
+        throw new GraphQLError('Invalid Id')
+      }
+      const user = await User.findById(userId).populate('friends').populate('events')
+
+      const nins = user.friends
+
+      nins.push(userId)
+
+      const users = await User.find({_id: {$nin: nins}})
+      //can I separate out all the users that aren't the user or user's friends?
+      if (!user){
+        throw new GraphQLError('User not found')
+      }
+
+      return users
+    },
     user: async (parent, { userId }, context, info) => {
       if (!context.user){
         throw AuthenticationError
@@ -211,7 +232,7 @@ const resolvers = {
     },
 
     //delete event
-    deleteEvent: async (parent, { userId, eventId }, context, info) => {
+    deleteEvent: async (parent, { eventId }, context, info) => {
       if (!context.user){
         throw AuthenticationError
       }

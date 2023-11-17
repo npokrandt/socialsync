@@ -1,23 +1,36 @@
-# Decode and Read JSON Web Token (Client-side)
+# Socialsync
 
-In this demo, you demonstrate how a token is stored client-side after successfully logging into the application.
+## Description
 
-## Instructions
+We are all busy people, and with hectic lives. Planning get-togethers with friends can be nigh impossible! Socialsync is a social media that allows you to easily schedule events and compare them with those of your friends, and connect better!
 
-* Run `npm install` and `npm run seed` to set up the database.
+## Technologies
 
-* Open the client-side [package.json](client/package.json) and explain that while we can't sign or verify a token in the client, we can check what information it holds and when it expires with the `jwt-decode` library.
+Socialsync is a full-stack application, based on the MERN stack. The back-end is a mongoDB database utilizing apollo and graphql for routing, react on the front end, and node keeping it all together.
 
-* Open [auth.js](client/src/utils/auth.js) and explain the `AuthService` class:
+## Usage 
 
-  * When we log into the site, we need to store our access token somewhere so we can retrieve and include it with any request to our server. This suite of functionality helps us achieve that goal.
+The user enters to see the homepage, which basically explains the site, along with providing buttons linking to the login or sign-up page. These can also be accessed from the header. 
 
-* Open [App.js](client/src/App.js) and explain the contents:
+The signup page is pretty simple. The user enters a username, an email address, and a password. Upon creating the account the user is logged in and directed to the profile page. Login is similar, requiring the email and password, and directing to the profile page upon success. 
 
-  * We now import the `setContext()` function from Apollo Client and implement it to retrieve the token and include it in the `headers` of any request to our server.
+The profile page is hidden unless the user is logged in. It shows their profile picture, with a calendar beneath. The calendar is where the user can create, modify, or delete events. To create an event, the user clicks somewhere on the calendar. They will be prompted for an event title and start and end time. Once those are provided, the event is added to the calendar. Events on the calendar can be modified or deleted. To modify the event, click the event, then the pencil icon. The prompt will show the current info and the user changes what he needs to. To delete an event, click the trash can. The user will confirm that they want to delete the event.
 
-  * We don't have anything server-side yet that will verify this token, but we'll focus on that later.
+The friends page shows all the user's friends. Beneath that list is a selection of users they could add as friends. They do that by clicking the button next to the username. Each of their friends can be clicked on and taken to their profile page. This shows the friend's info and a list of their events, with an option to add them to their own calendar. To do this, you click on the button next to the event.
 
-* Open [Login.js](client/src/pages/Login.js) and explain the page's functionality:
+That's it, for now! Happy scheduling!
 
-  * When we fill out and submit this form to login, we execute the `login` mutation and receive a token in return, which we immediately store using our `AuthService` class functionality.
+Profile page:
+![profile page](/READMEimages/profilePage.png)
+
+Friends page:
+![friends page](/READMEimages/friendsPage.png)
+
+## Link
+
+Check out Socialsync here:
+https://socialsync-122645211db0.herokuapp.com/
+
+## Notes
+
+A lot of this, especially involving graphql, was helped by looking at previous assignments, and some of the tough work an instructor helped with. Aside from that the code is our own
